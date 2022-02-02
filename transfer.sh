@@ -1,12 +1,17 @@
 #!/bin/bash
 
+# Usage: transfer.sh <photo_directory>
+# Example: bash transfer.sh /home/me/Pictures/
+
 # command to copy folders (without contents) of photos drive to an experimental folder
 # rsync -a --include='*/' --exclude='*' Pictures/Photo-Drive/Photo-Library/ Repos/photo-dir-rename/Photo-Library/
 
-years=($(seq 2000 1 2021)) # create array of possible years
+years=($(seq 2000 1 2023)) # create array of possible years
 months=(January February March April May June July August September October November December)
+parent_dir=$2
+parent_dir+="*/"
 
-for dir in Photo-Library/*/
+for dir in $parent_dir
 do
     orig_dir=$dir
     name_year=""
@@ -52,9 +57,11 @@ do
     else
         new_dir=$name_year-$name_month-$name_day
     fi
-    
-    mv "$orig_dir" "Photo-Library/$new_dir/"
 
+    dest_dir=$2
+    dest_dir+=$new_dir"/"
+    
+    mv "$orig_dir" "$dest_dir" 
 done
 
 echo "finished script"
